@@ -1,35 +1,30 @@
-//Äàí òåêñòîâûé ôàéë input.txt, â êîòîðîì õðàíÿòñÿ öåëûå ÷èñëà. Ñîçäàòü óïîðÿäî÷åííûé ïî âîç -
-//ðàñòàíèþ ñïèñîê.Èç êàæäîé ãðóïïû ïîäðÿä èäóùèõ ðàâíûõ ÷èñåë îòñòàâèòü òîëüêî îäíî(ïî -
-//âòîðÿþùèåñÿ óäàëèòü).Ïîëó÷åííóþ ïîñëåäîâàòåëüíîñòü çàïèñàòü â òåêñòîâûé ôàéë
-//output.txt.Åñëè èñêîìûõ ÷èñåë íåò, òî ïîìèìî ïîñëåäîâàòåëüíîñòè â ôàéë çàïèñàòü ñîîòâåò -
-//ñòâóþùåå ñîîáùåíèå.
+//Дан текстовый файл input.txt, в котором хранятся целые числа. Создать упорядоченный по воз -
+//растанию список.Из каждой группы подряд идущих равных чисел отставить только одно(по -
+//вторяющиеся удалить).Полученную последовательность записать в текстовый файл
+//output.txt.Если искомых чисел нет, то помимо последовательности в файл записать соответ -
+//ствующее сообщение.
 
 #include "My_List.h"
 #include <Windows.h>
 
 bool task(LIST& list)
 {
-	auto isEqual = [](int first, int second) // лямбда функция
+	auto isEqual = [](int first, int second)
 	{
 		return first == second;
 	};
 	bool check = false;
-	ptrNODE p = list.get_head();
-	while (p->next && p->next->next)
+	ptrNODE p = list.get_head()->next;
+	while (p && p->next)
 	{
-		bool flag = true;
-		if (isEqual(*p->next->info, *p->next->next->info))
+		if (isEqual(*p->info, *p->next->info))
 		{
-			list.del_after(p->next);
-			flag = false;
+			list.del_after(p);
+			check = true;
 		}
-		if (flag)
+		else
 		{
 			p = p->next;
-		}
-		if (!flag)
-		{
-			check = true;
 		}
 	}
 	return check;
@@ -52,7 +47,7 @@ int main()
 			while (input)
 			{
 				char choice;
-				std::cout << "Âûáåðèòå, êàê áóäåò ñîçäàâàòüñÿ ñïèñîê (1 - ñòåê, 2 - î÷åðåäü, 3 - óïîðÿäî÷åííî): "; std::cin >> choice;
+				std::cout << "Выберите, как будет создаваться список (1 - стек, 2 - очередь, 3 - упорядоченно): "; std::cin >> choice;
 				switch (choice)
 				{
 				case '1':
@@ -68,14 +63,14 @@ int main()
 					input = false;
 					break;
 				default:
-					std::cout << "Íåâåðíûé ââîä" << std::endl;
+					std::cout << "Неверный ввод" << std::endl;
 					input = true;
 					break;
 				}
 			}
 			if (task(list))
 			{
-				list.print(file_out, "Ïðåîáðàçîâàííàÿ ïîñëåäîâàòåëüíîñòü: \n");
+				list.print(file_out, "Преобразованная последовательность: \n");
 			}
 			else
 			{
@@ -90,12 +85,12 @@ int main()
 		bool label = true;
 		while (label)
 		{
-			std::cout << "Æåëàåòå íà÷àòü çàíîâî èëè âûéòè? 1 - çàíîâî, 2 - âûéòè ";
+			std::cout << "Желаете начать заново или выйти? (1 - заново, 2 - выйти): ";
 			std::cin >> choice;
 			switch (choice)
 			{
 			default:
-				std::cout << "Íåâåðíûé ââîä!" << std::endl;
+				std::cout << "Неверный ввод!" << std::endl;
 				label = true;
 				break;
 			case '1':
