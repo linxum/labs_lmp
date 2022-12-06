@@ -1,19 +1,19 @@
-#pragma once//следит подключена библиотека или нет (чтобы не было повтороного подключения)
+#pragma once//Г±Г«ГҐГ¤ГЁГІ ГЇГ®Г¤ГЄГ«ГѕГ·ГҐГ­Г  ГЎГЁГЎГ«ГЁГ®ГІГҐГЄГ  ГЁГ«ГЁ Г­ГҐГІ (Г·ГІГ®ГЎГ» Г­ГҐ ГЎГ»Г«Г® ГЇГ®ГўГІГ®Г°Г®Г­Г®ГЈГ® ГЇГ®Г¤ГЄГ«ГѕГ·ГҐГ­ГЁГї)
 #include <iostream>
 #include <fstream>
 
-using TInfo = int;//ввод псевдонима
+using TInfo = int;//ГўГўГ®Г¤ ГЇГ±ГҐГўГ¤Г®Г­ГЁГ¬Г 
 
-struct NODE //cтруктура узла
+struct NODE //cГІГ°ГіГЄГІГіГ°Г  ГіГ§Г«Г 
 {
 	TInfo* info;
-	NODE* next;//поле, хранящее следующий узел 
-	NODE(TInfo value, NODE* ptr = nullptr) :next(ptr) //конструктор
+	NODE* next;//ГЇГ®Г«ГҐ, ГµГ°Г Г­ГїГ№ГҐГҐ Г±Г«ГҐГ¤ГіГѕГ№ГЁГ© ГіГ§ГҐГ« 
+	NODE(TInfo value, NODE* ptr = nullptr) :next(ptr) //ГЄГ®Г­Г±ГІГ°ГіГЄГІГ®Г°
 	{
 		info = new int;
 		*info = value;
 	}
-	~NODE()//деструктор
+	~NODE()//Г¤ГҐГ±ГІГ°ГіГЄГІГ®Г°
 	{
 		next = nullptr;
 		delete info;
@@ -21,12 +21,12 @@ struct NODE //cтруктура узла
 	}
 };
 
-using ptrNODE = NODE*;//псевдоним узла
+using ptrNODE = NODE*;//ГЇГ±ГҐГўГ¤Г®Г­ГЁГ¬ ГіГ§Г«Г 
 
 struct LIST
 {
 private:
-	ptrNODE head, tail;//создание заглавного и последнего узла
+	ptrNODE head, tail;//Г±Г®Г§Г¤Г Г­ГЁГҐ Г§Г ГЈГ«Г ГўГ­Г®ГЈГ® ГЁ ГЇГ®Г±Г«ГҐГ¤Г­ГҐГЈГ® ГіГ§Г«Г 
 	size_t size;
 	void adding_by_pointer(ptrNODE& ptr, TInfo elem)
 	{
@@ -40,15 +40,15 @@ private:
 		delete p;
 	}
 public:
-	LIST()//конструктор
+	LIST()//ГЄГ®Г­Г±ГІГ°ГіГЄГІГ®Г°
 	{
 		head = new NODE(0);
 		tail = head;
 		size = 0;
 	}
-	//методы
+	//Г¬ГҐГІГ®Г¤Г»
 	~LIST();
-	ptrNODE get_head()//запрос головы (в таске, чтобы появилось начало списка)
+	ptrNODE get_head()//Г§Г ГЇГ°Г®Г± ГЈГ®Г«Г®ГўГ» (Гў ГІГ Г±ГЄГҐ, Г·ГІГ®ГЎГ» ГЇГ®ГїГўГЁГ«Г®Г±Гј Г­Г Г·Г Г«Г® Г±ГЇГЁГ±ГЄГ )
 	{
 		return head;
 	}
@@ -77,6 +77,6 @@ public:
 	void create_by_stack(std::ifstream& file);
 	void create_by_queue(std::ifstream& file);
 	void create_by_order(std::ifstream& file);
-	void print(std::ofstream& file, const char* message = "Искомой последовательности не обружено\n");
-	void sorting();//cортировка по возрастанию
+	void print(std::ofstream& file, const char* message = "Г€Г±ГЄГ®Г¬Г®Г© ГЇГ®Г±Г«ГҐГ¤Г®ГўГ ГІГҐГ«ГјГ­Г®Г±ГІГЁ Г­ГҐ Г®ГЎГ°ГіГ¦ГҐГ­Г®\n");
+	void sorting();//cГ®Г°ГІГЁГ°Г®ГўГЄГ  ГЇГ® ГўГ®Г§Г°Г Г±ГІГ Г­ГЁГѕ
 };
