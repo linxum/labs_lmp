@@ -1,4 +1,4 @@
-#define _CRTDBG_MAP_ALLOC//проверка корректности данных
+#define _CRTDBG_MAP_ALLOC//ГЇГ°Г®ГўГҐГ°ГЄГ  ГЄГ®Г°Г°ГҐГЄГІГ­Г®Г±ГІГЁ Г¤Г Г­Г­Г»Гµ
 #include <crtdbg.h>
 #define DBG_NEW new(_NORMAL_BLOCK,__FILE__,__LINE__)
 #define newDBG_NEW
@@ -24,7 +24,7 @@ bool LIST::empty()
 void LIST::add_to_head(TInfo elem)
 {
 	adding_by_pointer(head->next, elem);
-	if (head == tail)//cписок пуст
+	if (head == tail)//cГЇГЁГ±Г®ГЄ ГЇГіГ±ГІ
 		tail = tail->next;
 	++size;
 }
@@ -38,7 +38,7 @@ void LIST::add_to_tail(TInfo elem)
 
 void LIST::add_after(ptrNODE ptr, TInfo elem)
 {
-	if (ptr)//есть адрес, по которому делать вставку
+	if (ptr)//ГҐГ±ГІГј Г Г¤Г°ГҐГ±, ГЇГ® ГЄГ®ГІГ®Г°Г®Г¬Гі Г¤ГҐГ«Г ГІГј ГўГ±ГІГ ГўГЄГі
 	{
 		adding_by_pointer(ptr->next, elem);
 		if (ptr == tail)
@@ -52,7 +52,7 @@ void LIST::del_from_head()
 	if (head->next)
 	{
 		deleting_by_pointer(head->next);
-		if (!head->next) //один элемент
+		if (!head->next) //Г®Г¤ГЁГ­ ГЅГ«ГҐГ¬ГҐГ­ГІ
 			tail = head;
 		--size;
 	}
@@ -66,7 +66,7 @@ void LIST::del_after(ptrNODE ptr)
 			tail = ptr;
 		deleting_by_pointer(ptr->next);
 		if (empty())
-			tail = head;//надо или верхняя справится
+			tail = head;//Г­Г Г¤Г® ГЁГ«ГЁ ГўГҐГ°ГµГ­ГїГї Г±ГЇГ°Г ГўГЁГІГ±Гї
 		--size;
 	}
 }
@@ -89,7 +89,7 @@ void LIST::create_by_order(std::ifstream& file)
 {
 	TInfo elem;
 	ptrNODE p = nullptr;
-	auto find_place = [this](TInfo elem)->ptrNODE//ищем, куда вставить элемент (поиск места для вставки)
+	auto find_place = [this](TInfo elem)->ptrNODE//ГЁГ№ГҐГ¬, ГЄГіГ¤Г  ГўГ±ГІГ ГўГЁГІГј ГЅГ«ГҐГ¬ГҐГ­ГІ (ГЇГ®ГЁГ±ГЄ Г¬ГҐГ±ГІГ  Г¤Г«Гї ГўГ±ГІГ ГўГЄГЁ)
 	{
 		ptrNODE result = head;
 		while (result->next && *result->next->info < elem)
@@ -124,20 +124,20 @@ void LIST::sorting()
 		tmp->next = q->next;
 		q->next = tmp;
 	};
-	//h -      элемент, для котрого ищется место для вставки в упорядоченнной области
-	//h_prev - куда вставлять
+	//h -      ГЅГ«ГҐГ¬ГҐГ­ГІ, Г¤Г«Гї ГЄГ®ГІГ°Г®ГЈГ® ГЁГ№ГҐГІГ±Гї Г¬ГҐГ±ГІГ® Г¤Г«Гї ГўГ±ГІГ ГўГЄГЁ Гў ГіГЇГ®Г°ГїГ¤Г®Г·ГҐГ­Г­Г­Г®Г© Г®ГЎГ«Г Г±ГІГЁ
+	//h_prev - ГЄГіГ¤Г  ГўГ±ГІГ ГўГ«ГїГІГј
 	ptrNODE h = head->next->next, h_prev = head->next;
 	while (h)
 	{
-		if (*h_prev->info > *h->info)//означает, что нашли место для вставки
+		if (*h_prev->info > *h->info)//Г®Г§Г­Г Г·Г ГҐГІ, Г·ГІГ® Г­Г ГёГ«ГЁ Г¬ГҐГ±ГІГ® Г¤Г«Гї ГўГ±ГІГ ГўГЄГЁ
 		{
 			ptrNODE p = head;
-			while (p->next != h && *p->next->info < *h->info)//имеет место вставки (для переключения указателей)
+			while (p->next != h && *p->next->info < *h->info)//ГЁГ¬ГҐГҐГІ Г¬ГҐГ±ГІГ® ГўГ±ГІГ ГўГЄГЁ (Г¤Г«Гї ГЇГҐГ°ГҐГЄГ«ГѕГ·ГҐГ­ГЁГї ГіГЄГ Г§Г ГІГҐГ«ГҐГ©)
 				p = p->next;
 			switch_pointers(p, h_prev);
 			h = h_prev->next;
 		}
-		else //если элементы упорядочены (место искать не надо)
+		else //ГҐГ±Г«ГЁ ГЅГ«ГҐГ¬ГҐГ­ГІГ» ГіГЇГ®Г°ГїГ¤Г®Г·ГҐГ­Г» (Г¬ГҐГ±ГІГ® ГЁГ±ГЄГ ГІГј Г­ГҐ Г­Г Г¤Г®)
 		{
 			h_prev = h;
 			h = h->next;
