@@ -61,6 +61,6 @@ Type Medic::str_to_type(std::string str)
 
 std::string Medic::toString()
 {
-	return "Врач: " + Person::toString() + ", " + Get_type_string() + ", стаж: " + std::to_string(exp) + ", " + qual;
+	return "врач: " + Person::toString() + ", категория: " + Get_type_string() + ", стаж: " + std::to_string(exp) + ", квалификация: " + qual;
 
 }
