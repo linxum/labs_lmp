@@ -8,14 +8,13 @@
 void init(Policlinic& policlinic, std::fstream& file)
 {
 	char t;
-	std::string cat;
-	int exp;
-	std::string qual;
 	while (file >> t)
 	{
-		std::string fio, is_sex;
+		std::string fio, is_sex, ln, fn, mn;
 		bool sex;
-		file >> fio >> is_sex;
+		file >> ln >> fn >> mn;
+		fio = ln + ' ' + fn + ' ' + mn;
+		file >> is_sex;
 		if (is_sex == "м")
 		{
 			sex = true;
@@ -47,15 +46,12 @@ std::string task(Policlinic& policlinic)
 {
 	std::string str;
 	ps_ptr::iterator pediatr = policlinic.get_begin();
-	int result = false;
-	int f = 0, s = 0, h = 0, maxi = 0;
+	int f = 0, s = 0, h = 0;
 	while (pediatr != policlinic.get_end())
 	{
 		Medic* t = dynamic_cast<Medic*>(pediatr->get());
-
 		if (t && t->get_qual() == "педиатр")
 		{
-			result = true;
 			if (t->get_cat() == first)
 				f++;
 			else if (t->get_cat() == second)
@@ -65,13 +61,13 @@ std::string task(Policlinic& policlinic)
 		}
 		pediatr++;
 	}
-	maxi = max(max(f, s), h);
-	if (maxi == f)
-		str = "первая";
-	else if (maxi == s)
+	int maximum = max(max(f, s), h);
+	if (maximum == h)
+		str = "высшая";
+	else if (maximum == s)
 		str = "вторая";
 	else
-		str = "высшая";
+		str = "первая";
 	return str;
 }
 
@@ -83,5 +79,5 @@ int main()
 	Policlinic policlinic("Electronic");
 	init(policlinic, file);
 	std::cout << policlinic << std::endl;
-	std::cout << "" << task(policlinic);
+	std::cout << "Категория медработнков, в которой больше всего педиатров: " << task(policlinic) << std::endl;
 }
