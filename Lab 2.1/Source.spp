@@ -1,0 +1,45 @@
+#include <iostream>
+#include "My_List.h"
+#include <Windows.h>
+#include "HashTable.h"
+
+//void task(DLIST& list)
+//{
+//	int count = 1;
+//	ptrNODE p = list.get_begin();
+//	std::string cur_name = p->info.GetName();
+//	int cur_oper = p->info.GetPhone() / 10000000;
+//	while (p->next)
+//	{
+//		p = p->next;
+//		if (cur_name == p->info.GetName() && cur_oper == p->info.GetPhone() / 10000000)
+//		{
+//			count++;
+//		}
+//		else if (count >= 2)
+//		{
+//			std::cout << p->prev->info.GetName() << " " << p->prev->info.GetAddress() << std::endl;
+//			count = 1;
+//		}
+//		cur_name = p->info.GetName();
+//		cur_oper = p->info.GetPhone() / 10000000;
+//	}
+//}
+
+int main()
+{
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
+
+	std::ifstream file("contact.txt");
+	HashTable Table(file);
+	Table.print();
+	Table.remove(1433);
+	Table.print();
+	std::ifstream file1("list1.txt");
+	Contact ptr(file1);
+	Table.add(ptr);
+	Table.print();
+
+	std::cin.get();
+}
