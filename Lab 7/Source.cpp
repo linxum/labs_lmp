@@ -12,10 +12,15 @@ void main()
 	Table.print();
 	std::cout << '\n';
 
-	unsigned long long check = 9092345678;
+	unsigned long long check = 9192884868;
 	Table.remove(check);
 	Table.print();
 	std::cout << '\n';
+
+	//unsigned long long check1 = 9202884868;
+	//Contact res = (*Table.find(check1)).second;
+	//res.print();
+	//std::cout << '\n';
 
 	std::ifstream file1("list1.txt");
 	Contact ptr(file1);
