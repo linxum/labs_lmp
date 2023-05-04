@@ -74,21 +74,25 @@ bool HashTable::remove(unsigned long long key)
 bool HashTable::add(Contact contact)
 {
 	bool result = false;
-	if (find(contact.GetPhone()) == hashTable.end())
+	int ind = hash(contact.GetPhone());
+	while (hashTable[ind].first == 1 && hashTable[ind].second.GetPhone() != contact.GetPhone())
+		ind = (ind + 1) % maxSize;
+	int ptr = ind;
+	if (hashTable[ind].first == -1)
+		while (hashTable[ptr].first != 0 && hashTable[ptr].second.GetPhone() != contact.GetPhone())
+			ptr = (ptr + 1) % maxSize;
+	if (hashTable[ptr].first != 1)
 	{
-		int index = hash(contact.GetPhone());
-		while (hashTable[index].first == 1)
-		{
-			index = (index + 1) % maxSize;
-		}
-		hashTable[index].first = 1;
-		hashTable[index].second = contact;
-		result = true;
-		rehash();
+		hashTable[ind].first = 1;
+		hashTable[ind].second = contact;
+		result = 1;
 	}
+	
 	if (!result)
 		std::cout << "not";
 	std::cout << "added\n";
+	if (result)
+		rehash();
 	return result;
 }
 
