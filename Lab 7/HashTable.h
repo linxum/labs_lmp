@@ -22,6 +22,7 @@ public:
 	void rehash();
 	size_t hash(unsigned long long key);
 	Iterator find(unsigned long long key);
+	Contact find_if(unsigned long long key);
 	bool remove(unsigned long long key);
 	bool add(Contact good);
 	void print();
