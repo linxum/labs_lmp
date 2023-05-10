@@ -17,10 +17,8 @@ void main()
 	Table.print();
 	std::cout << '\n';
 
-	//unsigned long long check1 = 9202884868;
-	//Contact res = (*Table.find(check1)).second;
-	//res.print();
-	//std::cout << '\n';
+	unsigned long long check1 = 9202884868;
+	Contact res = Table.find_if(check1);
 
 	std::ifstream file1("list1.txt");
 	Contact ptr(file1);
