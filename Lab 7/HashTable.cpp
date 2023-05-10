@@ -51,9 +51,33 @@ Iterator HashTable::find(unsigned long long key)
 {
 	Iterator It = std::find_if(hashTable.begin(), hashTable.end(), [&key](el elem)-> bool {return elem.first == 1 && elem.second.GetPhone() == key; });
 	if (It == hashTable.end())
+	{
 		std::cout << "not ";
+	}
+	else
+	{
+		return It;
+	}
 	std::cout << "finded\n";
-	return It;
+}
+
+Contact HashTable::find_if(unsigned long long key)
+{
+	Iterator It = std::find_if(hashTable.begin(), hashTable.end(), [&key](el elem)-> bool {return elem.first == 1 && elem.second.GetPhone() == key; });
+	Contact result;
+	if (It == hashTable.end())
+	{
+		result = Contact();
+		std::cout << "not ";
+	}
+	else
+	{
+		result = (*It).second;
+	}
+	std::cout << "finded\n";
+	if (It != hashTable.end())
+		result.print();
+	return result;
 }
 
 bool HashTable::remove(unsigned long long key)
@@ -85,9 +109,9 @@ bool HashTable::add(Contact contact)
 	{
 		hashTable[ind].first = 1;
 		hashTable[ind].second = contact;
-		result = 1;
+		result = true;
 	}
-	
+
 	if (!result)
 		std::cout << "not";
 	std::cout << "added\n";
@@ -100,9 +124,13 @@ void HashTable::print()
 {
 	for (int i = 0; i < maxSize; i++)
 	{
-		std::cout << i << ") ";
 		if (hashTable[i].first == 1)
+		{
+			std::cout << i << " (";
+			std::cout << hash(hashTable[i].second.GetPhone()) << ") " << std::endl;
 			hashTable[i].second.print();
+
+		}
 		std::cout << "\n";
 	}
 }
