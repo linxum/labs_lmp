@@ -44,7 +44,6 @@ int par_find_line(int** arr)
 
 	}
 
-
 	for (int i = 0; i < NTHREAD - 1; i++)
 	{
 		th[i].join();
