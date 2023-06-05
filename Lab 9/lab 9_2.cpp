@@ -1,8 +1,11 @@
 #include <iostream>
 #include <fstream>
 #include <thread>
+#include <atomic>
 
 const size_t NTHREAD = 3;
+std::atomic<int> res_sum(0);
+std::atomic<int> res_line(-1);
 size_t n = 0;
 size_t m = 0;
 
@@ -16,14 +19,15 @@ int find_sum(int* arr)
 	return sum;
 }
 
-void find_max_line(int** arr, int beg, int end, int& max_sum, int& n_line)
+void find_max_line(int** arr, int beg, int end)
 {
 	for (int i = beg; i < end; i++)
 	{
-		if (find_sum(arr[i]) > max_sum)
+		int sum = find_sum(arr[i]);
+		if (sum > res_sum)
 		{
-			max_sum = find_sum(arr[i]);
-			n_line = i;
+			res_sum = sum;
+			res_line = i;
 		}
 
 	}
@@ -33,32 +37,20 @@ int par_find_line(int** arr)
 {
 	std::thread th[NTHREAD - 1];
 	size_t size = n / NTHREAD;
-	int n_lines[NTHREAD - 1];
-	int max_sums[NTHREAD - 1];
 
 	for (size_t i = 0; i < NTHREAD - 1; i++)
 	{
-		th[i] = std::thread(find_max_line, arr, i*size, (i+1)*size, std::ref(max_sums[i]), std::ref(n_lines[i]));
+		th[i] = std::thread(find_max_line, arr, i * size, (i + 1) * size);
 
 	}
 
-	int max_sum = 0;
-	int res_line = -1;
-	find_max_line(arr, (NTHREAD - 1) * size, n, max_sum, res_line);
 
 	for (int i = 0; i < NTHREAD - 1; i++)
 	{
 		th[i].join();
 	}
 
-	for (size_t i = 0; i < NTHREAD - 1; i++)
-	{
-		if (max_sum < max_sums[i])
-		{
-			max_sum = max_sums[i];
-			res_line = n_lines[i];
-		}
-	}
+	find_max_line(arr, (NTHREAD - 1) * size, n);
 	return res_line;
 }
 
