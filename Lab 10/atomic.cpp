@@ -2,12 +2,12 @@
 #include <fstream>
 #include <thread>
 #include <atomic>
+#include <Windows.h>
 
 const size_t NTHREAD = 3;
-std::atomic<int> n_lines[NTHREAD - 1];
-std::atomic<int> max_sums[NTHREAD - 1];
-std::atomic<int> res_sum(0);
-std::atomic<int> res_line(-1);
+std::atomic<int> res_sum = 0;
+std::atomic<int> res_line = -1;
+std::atomic_flag aflag = ATOMIC_FLAG_INIT;
 size_t n = 0;
 size_t m = 0;
 
@@ -23,26 +23,28 @@ int find_sum(int* arr)
 
 void find_max_line(int** arr, int beg, int end)
 {
-	for (int i = beg; i < end; i++)
+	int loc_sum = find_sum(arr[beg]);
+	int loc_line = beg;
+	for (int i = beg + 1; i < end; i++)
 	{
 		int sum = find_sum(arr[i]);
-		if (sum > res_sum)
+		if (sum > loc_sum)
 		{
-			res_sum.store(sum);
-			res_line.store(i);
+			loc_sum = sum;
+			loc_line = i;
 		}
-
 	}
-
-	
-	for (size_t i = 0; i < NTHREAD - 1; i++)
+	while (aflag.test_and_set())
 	{
-		if (res_sum < max_sums[i])
-		{
-			res_sum.store(max_sums[i]);
-			res_line.store(n_lines[i]);
-		}
+		Sleep(0);
 	}
+	if (loc_sum > res_sum)
+	{
+		res_sum = loc_sum;
+		res_line = loc_line;
+	}
+	aflag.clear();
+
 }
 
 int par_find_line(int** arr)
@@ -56,13 +58,13 @@ int par_find_line(int** arr)
 
 	}
 
+	find_max_line(arr, (NTHREAD - 1) * size, n);
 
 	for (int i = 0; i < NTHREAD - 1; i++)
 	{
 		th[i].join();
 	}
 
-	find_max_line(arr, (NTHREAD - 1) * size, n);
 	return res_line;
 }
 
